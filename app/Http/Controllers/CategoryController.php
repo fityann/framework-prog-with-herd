@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::getAll();
+        
+        $categories = Category::getAll($request);
         return view('categories.index', compact('categories'));
     }
 
@@ -25,7 +26,7 @@ class CategoryController extends Controller
         ];
         $store = Category::store($data);
         if($store) {
-            echo "Kategori berhasil disimpan.";
+            return redirect('/categories')->with('success', 'Data Berhasil Disimpan');
         }else{
             echo "Gagal menyimpan kategori.";
         }
@@ -43,9 +44,21 @@ class CategoryController extends Controller
         ];
         $update = Category::updateData($id, $data);
         if($update) {
-            echo "Kategori berhasil diupdate.";
+            return redirect('/categories')->with('success', 'Data Berhasil Diupdate');
         }else{
             echo "Gagal mengupdate kategori.";
         }
+    }
+
+    public function destroy($id)
+    {
+        $delete = Category::destroy($id);
+        if($delete) {
+            return redirect('/categories')->with('success', 'Data Berhasil Dihapus');
+        }else{
+            echo "Gagal menghapus kategori.";
+        }
+
+        return redirect('/categories');
     }
 }
