@@ -19,7 +19,7 @@ Route::put('/categories/update/{category}', [CategoryController::class, 'update'
 Route::delete('/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 
-Route::get('/produk', [ProdukController::class, 'index']);
+// Route::get('/produk', [ProdukController::class, 'index']);
 Route::get('/pelanggan', [PelangganController::class, 'index']);
 Route::post('/produk/store', [ProdukController::class, 'index']);
 Route::get('/customers', [CustomerController::class, 'index']);

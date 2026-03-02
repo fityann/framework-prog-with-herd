@@ -9,8 +9,9 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        
-        $categories = Category::getAll($request);
+
+        // $categories = Category::getAll($request);
+        $categories = Category::all();
         return view('categories.index', compact('categories'));
     }
 
@@ -21,10 +22,11 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $data = [
-            'category_name' => $request->category_name
-        ];
-        $store = Category::store($data);
+        // $data = [
+        //     'category_name' => $request->category_name
+        // ];
+        // $store = Category::store($data);
+        $store = Category::create($request->all());
         if($store) {
             return redirect('/categories')->with('success', 'Data Berhasil Disimpan');
         }else{
@@ -33,16 +35,18 @@ class CategoryController extends Controller
     }
     public function edit ($id)
     {
-        $categories = Category::getCategoryById($id);
+        // $categories = Category::getCategoryById($id);
+        $categories = Category::find($id);
         return view('categories.edit', compact('categories'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = [
-            'category_name' => $request->category_name
-        ];
-        $update = Category::updateData($id, $data);
+        // $data = [
+        //     'category_name' => $request->category_name
+        // ];
+        // $update = Category::updateData($id, $data);
+        $update = Category::find($id)->update($request->all());
         if($update) {
             return redirect('/categories')->with('success', 'Data Berhasil Diupdate');
         }else{

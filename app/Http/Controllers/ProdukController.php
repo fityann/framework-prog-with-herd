@@ -9,9 +9,17 @@ use Illuminate\Http\Request;
 
 class ProdukController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $title = "Produk";
-        $products = Product::with('category')->get();
+        $products = Product::with('category');
+
+        if ($request->filled('product_name')) {
+            $products = $products->where('product_name', 'like', '%' . $request->product_name . '%');
+        }
+        if ($request->filled('id')) {
+            $products = $products->where('id', $request->id);
+        }
+        $products = $products->get();
         return view('produk.index', compact('title','products'));
     }
 
@@ -23,14 +31,14 @@ class ProdukController extends Controller
 
     public function store(Request $request){
         // echo "Menyimpan data produk";
-        $data = [
-            'product_code' => $request->product_code,
-            'product_name' => $request->product_name,
-            'price' => $request->price,
-            'unit' => $request->unit,
-            'categories_id' => $request->categories_id
-        ];
-        $store = Product::store($data);
+        // $data = [
+        //     'product_code' => $request->product_code,
+        //     'product_name' => $request->product_name,
+        //     'price' => $request->price,
+        //     'unit' => $request->unit,
+        //     'categories_id' => $request->categories_id
+        // ];
+        $store = Product::create($request->all());
         if($store) {
             return redirect('/produk')->with('success', 'Data Berhasil Disimpan');
         }else{
@@ -40,20 +48,21 @@ class ProdukController extends Controller
 
     public function edit($id){
         $title = "Edit Produk";
-        $produk = Product::with('category')->findOrFail($id);
+        $produk = Product::with('category')->find($id);
         $categories = Category::all();
         return view('produk.edit', compact('title','produk','categories'));
     }
 
     public function update(Request $request, $id){
-        $data = [
-            'product_code' => $request->product_code,
-            'product_name' => $request->product_name,
-            'price' => $request->price,
-            'unit' => $request->unit,
-            'categories_id' => $request->categories_id
-        ];
-        $update = Product::updateData($id, $data);
+        // $data = [
+        //     'product_code' => $request->product_code,
+        //     'product_name' => $request->product_name,
+        //     'price' => $request->price,
+        //     'unit' => $request->unit,
+        //     'categories_id' => $request->categories_id
+        // ];
+        // $update = Product::updateData($id, $data);
+        $update = Product::find($id)->update($request->all());
         if($update) {
             return redirect('/produk')->with('success', 'Data Berhasil Diupdate');
         }else{

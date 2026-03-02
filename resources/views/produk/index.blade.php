@@ -11,6 +11,11 @@
 <body>
     <h1>ini halaman produk</h1>
     <a href="{{ route('produk.create') }}">Tambah Produk</a>
+    <form action="{{ Route('produk.index') }}" method="GET" style="margin-top: 20px">
+        <input type="text" name="product_name" placeholder="Search by name" value="{{ Request('product_name') }}">
+        <input type="text" name="id" placeholder="ID" value="{{ Request('id') }}" style="width: 50px">
+        <button type="submit">Search</button>
+    </form>
     <table border="1">
         <thead>
             <tr>
@@ -32,7 +37,8 @@
                     <td>{{ $produk->category->category_name ?? '-' }}</td>
                     <td>
                         <a href="{{ Route('produk.edit', $produk->id) }}">Edit</a> |
-                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST"
+                            style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Yakin ingin menghapus data ini?')">
