@@ -4,14 +4,13 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     protected $fillable = ['product_code', 'product_name', 'price', 'unit', 'categories_id'];
     public function category(){
         return $this->belongsTo(Category::class, 'categories_id');
-}
+    }
 
     // public static function getAll($request) {
     //    $query = DB::table('products')

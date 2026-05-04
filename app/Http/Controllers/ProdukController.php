@@ -38,6 +38,23 @@ class ProdukController extends Controller
         //     'unit' => $request->unit,
         //     'categories_id' => $request->categories_id
         // ];
+
+        // membuat validasi untuk mewajibkan input data diisi
+        $request->validate([
+            'product_code' => 'required|max:6',
+            'product_name' => 'required',
+            'price' => 'required|numeric',
+            'unit' => 'required',
+            'categories_id' => 'required'
+        ], [
+            'product_code.required' => 'Kode produk wajib diisi',
+            'product_code.max' => 'Kode produk maksimal 4 karakter',
+            'product_name.required' => 'Nama produk wajib diisi',
+            'price.required' => 'Harga wajib diisi',
+            'price.numeric' => 'Harga harus berupa angka',
+            'unit.required' => 'Satuan wajib diisi',
+            'categories_id.required' => 'Kategori wajib diisi'
+        ]);
         $store = Product::create($request->all());
         if($store) {
             return redirect('/produk')->with('success', 'Data Berhasil Disimpan');
